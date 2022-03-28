@@ -10,15 +10,17 @@ const { Item } = Menu;
 const Header = () => {
   const { loginWithRedirect, isAuthenticated, logout, user }: any = useAuth0();
   const [data, setData] = useState([]);
-
-  useEffect(() => {
-    setData(Apidata);
-    show()
-  }, data);
-
+ 
   const show = () => {
+    console.log("helo")
     setData(Apidata);
+    console.log("data from hraders", Apidata)
   };
+
+  // useEffect(() => {
+  //   show()
+  // }, data);
+
 
   const Apidata = useSelector((state: any): any => state.API_Data.Apidata);
   console.log("from header", Apidata);
@@ -133,11 +135,12 @@ const Header = () => {
                     )}
                   </li> */}
 
-                  <li className="dropdown">
+                  <li className="dropdown" >
                     <a
                       href="#"
                       className="dropdown-toggle"
                       data-toggle="dropdown"
+                     
                     >
                       <span className="lnr lnr-cart"></span>
                       <span className="badge badge-bg-1">2</span>
@@ -147,7 +150,9 @@ const Header = () => {
                       onMouseOver={() => show()}
                     >
                       {
-                      data.map((e:any) => {
+                      data.filter((e:any)=> e.qty > 0).map((e:any) => {
+
+                        
                         return (
                           <li className="single-cart-list">
                             <a href="#" className="photo">
