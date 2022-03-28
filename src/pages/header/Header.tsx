@@ -1,16 +1,29 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { LoginOutlined, LogoutOutlined, DownOutlined } from "@ant-design/icons";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Dropdown, Menu, Avatar } from "antd";
-import './header.css'
+import { useSelector } from "react-redux";
+import "./header.css";
 
 const { Item } = Menu;
 
 const Header = () => {
   const { loginWithRedirect, isAuthenticated, logout, user }: any = useAuth0();
+  const [data, setData] = useState([]);
 
+  useEffect(() => {
+    setData(Apidata);
+    show()
+  }, data);
+
+  const show = () => {
+    setData(Apidata);
+  };
+
+  const Apidata = useSelector((state: any): any => state.API_Data.Apidata);
+  console.log("from header", Apidata);
   const handleClick = (e: any) => {
-    console.log("e"+e)
+    console.log("e" + e);
     if (e.key === "logout") {
       // localStorage.removeItem("auth")
       // setAccount(false)
@@ -19,7 +32,7 @@ const Header = () => {
   };
 
   const dropdown_menu = (
-    <Menu style={{ position: "relative" }} onClick={handleClick}>
+    <Menu onClick={handleClick}>
       <Item key="logout" icon={<LogoutOutlined />}>
         Logout
       </Item>
@@ -84,7 +97,6 @@ const Header = () => {
                       <span className="lnr lnr-magnifier"></span>
                     </a>
                   </li>
-                  {console.log(user)}
                   {isAuthenticated ? (
                     <li className="logout">
                       {/* <a href="">
@@ -130,30 +142,39 @@ const Header = () => {
                       <span className="lnr lnr-cart"></span>
                       <span className="badge badge-bg-1">2</span>
                     </a>
-                    {/* <ul className="dropdown-menu cart-list s-cate">
-                        <li className="single-cart-list">
-                          <a href="#" className="photo">
-                            <img
-                              src="assets/images/arrivals1.png"
-                              className="cart-thumb"
-                              alt="image"
-                            />
-                          </a>
-                          <div className="cart-list-txt">
-                            <h6>
-                              <a href="#">
-                                arm <br /> chair
-                              </a>
-                            </h6>
-                            <p>
-                              1 x - <span className="price">$180.00</span>
-                            </p>
-                          </div>
-                          <div className="cart-close">
-                            <span className="lnr lnr-cross"></span>
-                          </div>
-                        </li>
-                        <li className="single-cart-list">
+                    <ul
+                      className="dropdown-menu cart-list s-cate"
+                      onMouseOver={() => show()}
+                    >
+                      {
+                      data.map((e:any) => {
+                        return (
+                          <li className="single-cart-list">
+                            <a href="#" className="photo">
+                              <img
+                                src={e.img}
+                                className="cart-thumb"
+                                alt="image"
+                              />
+                            </a>
+                            <div className="cart-list-txt">
+                              <h6>
+                                <a href="#">
+                                  {e.name}
+                                </a>
+                              </h6>
+                              <p>
+                                {e.qty} x - <span className="price">${e.price}</span>
+                              </p>
+                            </div>
+                            <div className="cart-close">
+                              <span className="lnr lnr-cross"></span>
+                            </div>
+                          </li>
+                        );
+                      })}
+
+                      {/* <li className="single-cart-list">
                           <a href="#" className="photo">
                             <img
                               src="assets/images/arrivals2.png"
@@ -196,14 +217,14 @@ const Header = () => {
                           <div className="cart-close">
                             <span className="lnr lnr-cross"></span>
                           </div>
-                        </li>
-                        <li className="total">
-                          <span>Total: $0.00</span>
-                          <button className="btn-cart pull-right">
-                            view cart
-                          </button>
-                        </li>
-                      </ul> */}
+                        </li> */}
+                      <li className="total">
+                        <span>Total: $0.00</span>
+                        <button className="btn-cart pull-right">
+                          view cart
+                        </button>
+                      </li>
+                    </ul>
                   </li>
                 </ul>
               </div>
@@ -232,9 +253,14 @@ const Header = () => {
                   <li className=" scroll active">
                     <a href="#home">home</a>
                   </li>
-                  <li className="scroll">
-                    <a href="#new-arrivals">new arrival</a>
-                  </li>
+                  {user ? (
+                    <li className="scroll">
+                      <a href="#new-arrivals">new arrival</a>
+                    </li>
+                  ) : (
+                    false
+                  )}
+
                   <li className="scroll">
                     <a href="#feature">features</a>
                   </li>
