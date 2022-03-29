@@ -5,9 +5,13 @@ import App from "./App";
 import { Provider } from "react-redux";
 import store from "../src/redux/store/store";
 import { Auth0Provider } from "@auth0/auth0-react";
+import {BrowserRouter} from "react-router-dom"
+import Context from './context/Context'
 
 ReactDOM.render(
   <React.StrictMode>
+    <Context>
+    <BrowserRouter>
     <Provider store={store}>
       <Auth0Provider
         domain="agwork2304.us.auth0.com"
@@ -17,6 +21,10 @@ ReactDOM.render(
         <App />
       </Auth0Provider>
     </Provider>
+    </BrowserRouter>
+    </Context>
+   
+    
   </React.StrictMode>,
   document.getElementById("root")
 );

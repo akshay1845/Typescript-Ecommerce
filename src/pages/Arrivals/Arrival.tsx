@@ -1,29 +1,31 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { callApi } from "../../redux/actions/action";
-import {addToCart} from "../../redux/actions/action"
+import { addToCart } from "../../redux/actions/action";
+import { NavLink, useNavigate } from "react-router-dom";
+import {Countcontext} from '../../context/Context'
 
 import { useDispatch, useSelector } from "react-redux";
 
-
 const Arrival = () => {
   const { user, isAuthenticated }: any = useAuth0();
+  // const [count, setCount] = useState(0)
+
+  const {count, setCount} = useContext(Countcontext)
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const Apidata = useSelector((state: any): any => state.API_Data.Apidata);
+
+  useEffect(() => {
+    dispatch(callApi);
+  }, []);
   
-
-  const Apidata = useSelector((state:any):any => state.API_Data.Apidata);
-  console.log("STATE",Apidata)
-
-
-  useEffect(()=>{
-    dispatch(callApi)
-  },[])
-  // console.log("products => " + products);
-
-  const add = (id:number):any=>{
-    dispatch(addToCart(id))
-  }
+  const add = (id: number): any => {
+    dispatch(addToCart(id));
+    setCount(count + 1)
+  };
 
   return (
     <>
@@ -36,9 +38,9 @@ const Arrival = () => {
               </div>
               <div className="new-arrivals-content">
                 <div className="row">
-                  {Apidata.map((e:any) => {
+                  {Apidata.map((e: any, key: any) => {
                     return (
-                      <>
+                      <React.Fragment key={key}>
                         <div className="col-md-3 col-sm-4">
                           <div className="single-new-arrival">
                             <div className="single-new-arrival-bg">
@@ -50,13 +52,20 @@ const Arrival = () => {
                               <div className="new-arrival-cart">
                                 <p>
                                   <span className="lnr lnr-cart"></span>
-                                  <a onClick={()=>add(e.id)}>
+                                  <a onClick={() => add(e.id)}>
                                     add <span>to </span> cart
                                   </a>
                                 </p>
                                 <p className="arrival-review pull-right">
                                   <span className="lnr lnr-heart"></span>
-                                  <span className="lnr lnr-frame-expand"></span>
+                                  <span
+                                    className="lnr lnr-frame-expand"
+                                    onClick={() => {
+                                      navigate(`view/${e.id}`);
+                                    }}
+                                  >
+                                    {" "}
+                                  </span>
                                 </p>
                               </div>
                             </div>
@@ -66,14 +75,12 @@ const Arrival = () => {
                             <p className="arrival-product-price">${e.price}</p>
                           </div>
                         </div>
-                      </>
+                      </React.Fragment>
                     );
                   })}
                 </div>
               </div>
             </div>
-
-            
           </section>
           <section id="sofa-collection">
             <div className="owl-carousel owl-theme" id="collection-carousel">

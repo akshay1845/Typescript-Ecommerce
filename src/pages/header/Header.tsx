@@ -1,8 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import  {useNavigate} from 'react-router-dom'
 import { LoginOutlined, LogoutOutlined, DownOutlined } from "@ant-design/icons";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Dropdown, Menu, Avatar } from "antd";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import {removeToCart} from'../../redux/actions/action'
+import {Countcontext} from '../../context/Context'
+
 import "./header.css";
 
 const { Item } = Menu;
@@ -10,25 +14,44 @@ const { Item } = Menu;
 const Header = () => {
   const { loginWithRedirect, isAuthenticated, logout, user }: any = useAuth0();
   const [data, setData] = useState([]);
- 
-  const show = () => {
-    console.log("helo")
-    setData(Apidata);
-    console.log("data from hraders", Apidata)
+  let [total, setTotal]: any = useState(0);
+  const {count, setCount} = useContext(Countcontext)
+
+  const dispatch = useDispatch()
+
+  const navigate = useNavigate()
+
+  const addItem = () => {
+    setData(UpdateData());
+    data.map((e:any)=> localStorage.setItem(e.id,JSON.stringify(e)))
+    totalPrice()
+  };
+  const Apidata = useSelector((state: any): any => state.API_Data.Apidata);
+
+  const UpdateData = (): any => {
+    const data = Apidata.filter((e: any) => e.qty > 0);
+    
+    return data;
   };
 
-  // useEffect(() => {
-  //   show()
-  // }, data);
+  let sum1 = 0;
+  const totalPrice = () => {
+    data
+      .map((e: any) => e.qty * e.price)
+      .map((e: number) => {
+        sum1 += e;
+        setTotal(sum1);
+      });
+  };
 
+  const removeItem = (id: number) =>{
+    console.log("tatatatatat",id)
+    dispatch(removeToCart(id))
+  }
 
-  const Apidata = useSelector((state: any): any => state.API_Data.Apidata);
-  console.log("from header", Apidata);
   const handleClick = (e: any) => {
     console.log("e" + e);
     if (e.key === "logout") {
-      // localStorage.removeItem("auth")
-      // setAccount(false)
       logout();
     }
   };
@@ -41,6 +64,9 @@ const Header = () => {
     </Menu>
   );
 
+  useEffect(() => {
+    addItem()
+  }, [count]);
   return (
     <header id="home" className="welcome-hero">
       <div
@@ -135,49 +161,49 @@ const Header = () => {
                     )}
                   </li> */}
 
-                  <li className="dropdown" >
+                  <li className="dropdown">
                     <a
                       href="#"
                       className="dropdown-toggle"
                       data-toggle="dropdown"
-                     
                     >
-                      <span className="lnr lnr-cart"></span>
-                      <span className="badge badge-bg-1">2</span>
+                      <span className="lnr lnr-cart" onMouseOver={() => addItem()}></span>
+                      <span className="badge badge-bg-1">{data.length}</span>
                     </a>
                     <ul
                       className="dropdown-menu cart-list s-cate"
-                      onMouseOver={() => show()}
+                      onMouseOver={() => addItem()}
                     >
-                      {
-                      data.filter((e:any)=> e.qty > 0).map((e:any) => {
-
-                        
-                        return (
-                          <li className="single-cart-list">
-                            <a href="#" className="photo">
-                              <img
-                                src={e.img}
-                                className="cart-thumb"
-                                alt="image"
-                              />
-                            </a>
-                            <div className="cart-list-txt">
-                              <h6>
-                                <a href="#">
-                                  {e.name}
-                                </a>
-                              </h6>
-                              <p>
-                                {e.qty} x - <span className="price">${e.price}</span>
-                              </p>
-                            </div>
-                            <div className="cart-close">
-                              <span className="lnr lnr-cross"></span>
-                            </div>
-                          </li>
-                        );
-                      })}
+                      {data
+                        .filter((e: any) => e.qty > 0)
+                        .map((e: any) => {
+                          return (
+                            <li className="single-cart-list" key={e.id}>
+                              <a href="#" className="photo">
+                                <img
+                                  src={e.img}
+                                  className="cart-thumb"
+                                  alt="image"
+                                />
+                              </a>
+                              <div className="cart-list-txt">
+                                <h6>
+                                  <a href="#">{e.name}</a>
+                                </h6>
+                                <p>
+                                  {e.qty} x -{" "}
+                                  <span className="price">${e.price}</span>
+                                </p>
+                              </div>
+                              <div className="cart-close">
+                                <span
+                                  className="lnr lnr-cross"
+                                  onClick={() => removeItem(e.id)}
+                                ></span>
+                              </div>
+                            </li>
+                          );
+                        })}
 
                       {/* <li className="single-cart-list">
                           <a href="#" className="photo">
@@ -224,7 +250,7 @@ const Header = () => {
                           </div>
                         </li> */}
                       <li className="total">
-                        <span>Total: $0.00</span>
+                        <span>Total: ${total}</span>
                         <button className="btn-cart pull-right">
                           view cart
                         </button>
@@ -256,24 +282,24 @@ const Header = () => {
                   data-out="fadeOutUp"
                 >
                   <li className=" scroll active">
-                    <a href="#home">home</a>
+                    <a href="#home" onClick={() => navigate('/')}>home</a>
                   </li>
                   {user ? (
                     <li className="scroll">
-                      <a href="#new-arrivals">new arrival</a>
+                      <a href="#new-arrivals"  onClick={() => navigate('/')}>new arrival</a>
                     </li>
                   ) : (
                     false
                   )}
 
                   <li className="scroll">
-                    <a href="#feature">features</a>
+                    <a href="#feature"  onClick={() => navigate('/')}>features</a>
                   </li>
                   <li className="scroll">
-                    <a href="#blog">blog</a>
+                    <a href="#blog"  onClick={() => navigate('/')}>blog</a>
                   </li>
                   <li className="scroll">
-                    <a href="#newsletter">contact</a>
+                    <a href="#newsletter"  onClick={() => navigate('/')}>contact</a>
                   </li>
                 </ul>
               </div>

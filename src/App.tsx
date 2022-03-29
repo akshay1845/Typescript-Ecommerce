@@ -8,18 +8,31 @@ import Footer from "./pages/footer/Footer";
 import Header from "./pages/header/Header";
 import Home from "./pages/home/Home";
 import Newsletter from "./pages/newsletter/Newsletter";
+import View from "./pages/Arrivals/View"
+import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
     <div className="App">
       <Header />
-      <Home />
-      <Arrival />
-      <Feature />
-      <Blog />
-      <Client />
-      <Newsletter />
-      <Footer /> 
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              
+              <Home />
+              <Arrival />
+              <Feature />
+              <Blog />
+              <Client />
+              <Newsletter />
+              <Footer />
+            </>
+          }
+        />
+        <Route path="view/:id" element={<View />}/>
+      </Routes>
     </div>
   );
 }
