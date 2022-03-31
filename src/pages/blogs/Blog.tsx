@@ -18,10 +18,10 @@ const Blog = () => {
                   </div>
                   <div className="single-blog-txt">
                     <h2>
-                      <a href="#">Why Brands are Looking at Local Language</a>
+                      <span>Why Brands are Looking at Local Language</span>
                     </h2>
                     <h3>
-                      By <a href="#">Robert Norby</a> / 18th March 2018
+                      By <span>Robert Norby</span> / 18th March 2018
                     </h3>
                     <p>
                       Nemo enim ipsam voluptatem quia voluptas sit aspernatur
@@ -39,10 +39,10 @@ const Blog = () => {
                   </div>
                   <div className="single-blog-txt">
                     <h2>
-                      <a href="#">Why Brands are Looking at Local Language</a>
+                      <span>Why Brands are Looking at Local Language</span>
                     </h2>
                     <h3>
-                      By <a href="#">Robert Norby</a> / 18th March 2018
+                      By <span>Robert Norby</span> / 18th March 2018
                     </h3>
                     <p>
                       Nemo enim ipsam voluptatem quia voluptas sit aspernatur
@@ -60,10 +60,10 @@ const Blog = () => {
                   </div>
                   <div className="single-blog-txt">
                     <h2>
-                      <a href="#">Why Brands are Looking at Local Language</a>
+                      <span>Why Brands are Looking at Local Language</span>
                     </h2>
                     <h3>
-                      By <a href="#">Robert Norby</a> / 18th March 2018
+                      By <span>Robert Norby</span> / 18th March 2018
                     </h3>
                     <p>
                       Nemo enim ipsam voluptatem quia voluptas sit aspernatur

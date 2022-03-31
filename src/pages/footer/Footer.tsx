@@ -25,7 +25,7 @@ const Footer = () => {
             </div>
             <p>
               &copy;copyright. designed and developed by{" "}
-              <a href="https://www.therichpost.com/">Jassa</a>
+              <a href="https://www.therichpost.com/">AG@Developer</a>
             </p>
           </div>
         </div>

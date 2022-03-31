@@ -1,20 +1,26 @@
-import {createContext, useState} from 'react'
+import React, { createContext, useState } from "react";
 
-
-
-export const Countcontext:any = createContext(null);
-
-const Context = ({ children }:any) => {
-
-    const [count, setCount] = useState(0);
-    
-    return (
-        <>
-            <Countcontext.Provider value={{ count, setCount }}>
-                {children}
-            </Countcontext.Provider>
-        </>
-    )
+interface AppContextInterface {
+  count: number;
+  setCount: Function;
 }
 
-export default Context
+type Context = {
+  children : React.ReactNode
+}
+
+export const Countcontext = createContext<AppContextInterface | null>(null);
+
+const Context = ({ children }:Context)=> {
+  const [count, setCount] = useState<number>(0);
+
+  return (
+    <>
+      <Countcontext.Provider value={{ count, setCount }}>
+        {children}
+      </Countcontext.Provider>
+    </>
+  );
+};
+
+export default Context;

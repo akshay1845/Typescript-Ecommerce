@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Arrival = () => {
   const { user, isAuthenticated }: any = useAuth0();
-  // const [count, setCount] = useState(0)
 
   const {count, setCount} = useContext(Countcontext)
 
@@ -46,8 +45,8 @@ const Arrival = () => {
                             <div className="single-new-arrival-bg">
                               <img src={e.img} alt="new-arrivals images" />
                               <div className="single-new-arrival-bg-overlay"></div>
-                              <div className="sale bg-1">
-                                <p>sale</p>
+                              <div className="sale bg-1" >
+                                <p >Cart-{e.qty}</p>
                               </div>
                               <div className="new-arrival-cart">
                                 <p>

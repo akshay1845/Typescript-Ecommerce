@@ -1,7 +1,7 @@
 const intialize:any = {
 Apidata:[]
 }
-const API_Data = (state = intialize , action:any):any =>{
+const API_Data = (state = intialize , action:any)=>{
 
     switch(action.type){
         

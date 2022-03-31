@@ -1,5 +1,5 @@
 import React from "react";
-import "./App.css";
+import "./App.scss";
 import Arrival from "./pages/Arrivals/Arrival";
 import Blog from "./pages/blogs/Blog";
 import Client from "./pages/clients/Client";
@@ -20,7 +20,6 @@ function App() {
           path="/"
           element={
             <>
-              
               <Home />
               <Arrival />
               <Feature />

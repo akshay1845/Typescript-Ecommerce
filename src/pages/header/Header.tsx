@@ -1,21 +1,27 @@
 import { useEffect, useState, useContext } from "react";
 import  {useNavigate} from 'react-router-dom'
 import { LoginOutlined, LogoutOutlined, DownOutlined } from "@ant-design/icons";
-import { useAuth0 } from "@auth0/auth0-react";
+import { Auth0ContextInterface,  useAuth0 } from "@auth0/auth0-react";
 import { Dropdown, Menu, Avatar } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import {removeToCart} from'../../redux/actions/action'
 import {Countcontext} from '../../context/Context'
 
-import "./header.css";
+import "./header.scss";
 
 const { Item } = Menu;
 
+
 const Header = () => {
-  const { loginWithRedirect, isAuthenticated, logout, user }: any = useAuth0();
-  const [data, setData] = useState([]);
-  let [total, setTotal]: any = useState(0);
-  const {count, setCount} = useContext(Countcontext)
+  interface Context{
+    count: number;
+    setCount: Function
+  }
+
+  const { loginWithRedirect, isAuthenticated, logout, user}:Auth0ContextInterface = useAuth0();
+  const [data, setData] = useState<object[]>([]);
+  let [total, setTotal] = useState<number>(0);
+  const {count, setCount} = useContext<Context>(Countcontext)
 
   const dispatch = useDispatch()
 
@@ -23,10 +29,10 @@ const Header = () => {
 
   const addItem = () => {
     setData(UpdateData());
-    data.map((e:any)=> localStorage.setItem(e.id,JSON.stringify(e)))
+    // data.map((e:)=> localStorage.setItem(e.id,JSON.stringify(e)))
     totalPrice()
   };
-  const Apidata = useSelector((state: any): any => state.API_Data.Apidata);
+  const Apidata = useSelector((state:any ) => state.API_Data.Apidata);
 
   const UpdateData = (): any => {
     const data = Apidata.filter((e: any) => e.qty > 0);
@@ -42,14 +48,15 @@ const Header = () => {
         sum1 += e;
         setTotal(sum1);
       });
-  };
+  }; 
 
   const removeItem = (id: number) =>{
     console.log("tatatatatat",id)
     dispatch(removeToCart(id))
+    setCount(count+1)
   }
 
-  const handleClick = (e: any) => {
+  const handleClick = (e:any) => {
     console.log("e" + e);
     if (e.key === "logout") {
       logout();
